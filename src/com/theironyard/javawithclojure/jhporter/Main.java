@@ -1,5 +1,6 @@
 package com.theironyard.javawithclojure.jhporter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -61,50 +62,58 @@ public class Main {
     public static boolean isStraight(HashSet<Card> hand)
     {
         boolean isAStraight = false;
-        if (hand.contains(Card.Rank.ACE) && hand.contains(Card.Rank.TWO) && hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR))
+
+        int c1=0, c2=0, c3=0, c4=0, i=1;
+        for(Card card : hand)
         {
-            isAStraight = true;
+
+            switch (i)
+            {
+                case 1:
+                    c1 = card.rank.ordinal();
+                    i++;
+                    break;
+                case 2:
+                    c2 = card.rank.ordinal();
+                    i++;
+                    break;
+                case 3:
+                    c3 = card.rank.ordinal();
+                    i++;
+                    break;
+                case 4:
+                    c4 = card.rank.ordinal();
+                    break;
+            }
         }
-        if (hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.TWO) && hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR))
+
+        //order them.
+        ArrayList<Integer> cards = new ArrayList<>();
+        cards.add(c1);
+        cards.add(c2);
+        cards.add(c3);
+        cards.add(c4);
+        for(i = 0; i<cards.size();i++)
         {
-            isAStraight = true;
+            for (int j = 0; j<cards.size();j++)
+            {
+                int tmp = 0;
+                if (cards.get(i) < cards.get(j))
+                {
+                    tmp = cards.get(i);
+                    cards.set(i, cards.get(j));
+                    cards.set(j, tmp);
+                }
+            }
         }
-        if (hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR))
+        if ((cards.get(3)-cards.get(2)==1) && (cards.get(3)-cards.get(2)==1) && cards.get(2)-cards.get(1)==1)
         {
-            isAStraight = true;
+            if ((cards.get(1)-cards.get(0)==1) || (cards.get(1)-cards.get(0)==10))
+            {
+                isAStraight = true;
+            }
         }
-        if (hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.FOUR))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.EIGHT))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.QUEEN))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.KING) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.QUEEN))
-        {
-            isAStraight = true;
-        }
-        if (hand.contains(Card.Rank.KING) && hand.contains(Card.Rank.ACE) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.QUEEN))
-        {
-            isAStraight = true;
-        }
+
         return isAStraight;
     }
 
@@ -194,7 +203,11 @@ public class Main {
         boolean isAFlush = isFlush(hand);
         boolean isAStraight = isStraight(hand);
 
-        return isAFlush && isAStraight;
+        if(isAFlush && isAStraight)
+        {
+            return true;
+        }
+        return false;
     }
 
 

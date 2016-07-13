@@ -5,7 +5,7 @@ package com.theironyard.javawithclojure.jhporter;
  */
 public class Card
 {
-    enum Suit
+    public enum Suit
     {
         CLUBS,
         DIAMONDS,
@@ -13,7 +13,7 @@ public class Card
         SPADES
     }
 
-    enum Rank
+    public enum Rank
     {
         ACE,
         TWO,
